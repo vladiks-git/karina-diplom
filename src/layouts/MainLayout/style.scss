@@ -1,0 +1,17 @@
+.main-layout{
+  height: 100vh;
+  &__content{
+    display: flex;
+    height: calc(100vh - 68px);
+  }
+  &__sidebar{
+    flex: 0 0 200px;
+    height: 100%;
+    background: white;
+  }
+  &__main{
+    height: 100%;
+    flex: 1 0 auto;
+    padding: 0 20px 20px 20px;
+  }
+}
