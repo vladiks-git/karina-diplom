@@ -15,3 +15,8 @@ export const projectManagerRoutes = {
     root: 'project-manager',
     create: 'create',
 };
+
+export const employerRoutes = {
+    root: 'employer',
+    project: 'project',
+};

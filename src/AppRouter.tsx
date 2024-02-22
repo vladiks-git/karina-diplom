@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import {
     adminRoutes,
     counterpartyRoutes,
+    employerRoutes,
     projectManagerRoutes,
     routes,
 } from './consts/routes';
@@ -15,6 +16,9 @@ import { СounterpartyPage } from './pages/СounterpartyPage/СounterpartyPage';
 import { ProjectManagerPage } from './pages/ProjectManagerPage/ProjectManagerPage';
 import ProjectsList from './components/projectManager/ProjectList/ProjectsList';
 import CreateEditProject from './components/projectManager/CreateEditProject/CreateEditProject';
+import EmployerPage from './pages/EmployerPage/EmployerPage';
+import { EmployerProjectList } from './components/employer/EmployerProjectList/ProjectList';
+import { EmployerProjectEdit } from './components/employer/EmployerProjectEdit/ProjectEdit';
 
 export const AppRouter = () => {
     const mainRoutes = createBrowserRouter([
@@ -66,6 +70,21 @@ export const AppRouter = () => {
                         {
                             path: `${projectManagerRoutes.create}/:id`,
                             element: <CreateEditProject />,
+                        },
+                    ],
+                },
+                // employer
+                {
+                    path: employerRoutes.root,
+                    element: <EmployerPage />,
+                    children: [
+                        {
+                            index: true,
+                            element: <EmployerProjectList />,
+                        },
+                        {
+                            path: `${employerRoutes.project}`,
+                            element: <EmployerProjectEdit />,
                         },
                     ],
                 },
