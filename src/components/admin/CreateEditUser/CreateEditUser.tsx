@@ -4,7 +4,7 @@ import './style.scss';
 import { Card } from '../../../ui-kit/Card/Card';
 import { useForm } from 'antd/es/form/Form';
 import { ContentHeader } from '../../ContentHeader/ContentHeader';
-import ContentWrapper from '../../ContentWrapper/ContentWrapper';
+import { ContentWrapper } from '../../ContentWrapper/ContentWrapper';
 import { useNavigate } from 'react-router';
 import { adminRoutes } from '../../../consts/routes';
 

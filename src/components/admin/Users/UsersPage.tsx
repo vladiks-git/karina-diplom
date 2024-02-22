@@ -3,7 +3,7 @@ import { ContentHeader } from '../../ContentHeader/ContentHeader';
 import { Card } from '../../../ui-kit/Card/Card';
 import { Button, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import ContentWrapper from '../../ContentWrapper/ContentWrapper';
+import { ContentWrapper } from '../../ContentWrapper/ContentWrapper';
 import { useNavigate } from 'react-router';
 import { adminRoutes } from '../../../consts/routes';
 
