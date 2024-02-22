@@ -21,7 +21,10 @@ const CreateEditUser = () => {
 
     return (
         <>
-            <ContentHeader title={'Создание новой учетной записи'} />
+            <ContentHeader
+                title={'Создание новой учетной записи'}
+                onBack={handleBack}
+            />
             <ContentWrapper>
                 <Card>
                     <div className={'create-user'}>
