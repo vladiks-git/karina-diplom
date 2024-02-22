@@ -10,3 +10,8 @@ export const adminRoutes = {
 export const counterpartyRoutes = {
     root: 'counterparty',
 };
+
+export const projectManagerRoutes = {
+    root: 'project-manager',
+    create: 'create',
+};

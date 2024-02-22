@@ -7,4 +7,20 @@
     font-size: 24px;
   }
 
+  &__back{
+    color: #b2b1b1;
+    margin-top: 30px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    svg{
+      width: 30px;
+      height: 30px;
+    }
+    &:hover{
+      cursor: pointer;
+    }
+  }
+
 }
