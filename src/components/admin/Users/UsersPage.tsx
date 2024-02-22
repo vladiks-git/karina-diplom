@@ -1,11 +1,13 @@
 import React from 'react';
-import { ContentHeader } from '../../components/ContentHeader/ContentHeader';
-import { Card } from '../../ui-kit/Card/Card';
+import { ContentHeader } from '../../ContentHeader/ContentHeader';
+import { Card } from '../../../ui-kit/Card/Card';
 import { Button, Table } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import ContentWrapper from '../../components/ContentWrapper/ContentWrapper';
+import ContentWrapper from '../../ContentWrapper/ContentWrapper';
+import { useNavigate } from 'react-router';
+import { adminRoutes } from '../../../consts/routes';
 
-export const UsersPage = () => {
+export const Users = () => {
     const columns = [
         {
             title: 'ID',
@@ -37,6 +39,10 @@ export const UsersPage = () => {
         },
     ];
 
+    const navigate = useNavigate();
+
+    const handleAdd = () => navigate(adminRoutes.create);
+
     return (
         <>
             <ContentHeader title={'Список пользователей'} />
@@ -46,6 +52,7 @@ export const UsersPage = () => {
                         style={{ marginBottom: '20px' }}
                         type={'primary'}
                         icon={<PlusOutlined />}
+                        onClick={handleAdd}
                     >
                         Добавить
                     </Button>
