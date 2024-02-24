@@ -31,7 +31,7 @@ export const Users = () => {
 
     const handleDelete = (id: number) => {
         console.log(id);
-        // deleteUser(id)
+        deleteUser(id);
     };
 
     const handleEdit = (id: number) => {
