@@ -14,6 +14,7 @@ import {
     useGetAllEmployersQuery,
     useGetProjectByIdQuery,
     useSaveProjectMutation,
+    useUpdateProjectMutation,
 } from '../../../api/projectManager';
 import { getFormattedDate } from '../../../utils/common';
 import { toast } from 'react-toastify';
@@ -53,6 +54,9 @@ const CreateEditProject = () => {
     const [saveProject, { isSuccess: isSuccessCreate }] =
         useSaveProjectMutation();
 
+    const [updateProject, { isSuccess: isSuccessUpdate }] =
+        useUpdateProjectMutation();
+
     const { projectById } = useGetProjectByIdQuery(
         paramsId ? +paramsId : skipToken,
         {
@@ -61,14 +65,12 @@ const CreateEditProject = () => {
                     name: data?.name || '',
                     status: data?.status || undefined,
                     employerId: data?.employerId || undefined,
-                    counterpartyId: data?.counterparty || undefined,
+                    counterpartyId: data?.counterpartyId || undefined,
                     tasks: data?.tasks ? mapTasks(data?.tasks) : [],
                 },
             }),
         }
     );
-
-    console.log(projectById);
 
     useEffect(() => {
         form.setFieldsValue({ ...projectById });
@@ -79,7 +81,11 @@ const CreateEditProject = () => {
             toast.success('Проект успешно создан!');
             handleBack();
         }
-    }, [isSuccessCreate]);
+        if (isSuccessUpdate) {
+            toast.success('Проект успешно сохранен!');
+            handleBack();
+        }
+    }, [isSuccessCreate, isSuccessUpdate]);
 
     const handleFinish = (values: any) => {
         const mappedTasks = values.tasks.map((task: any) => ({
@@ -88,7 +94,14 @@ const CreateEditProject = () => {
             isDone: false,
         }));
         const body: IProject = { ...values, tasks: mappedTasks };
-        saveProject(body);
+        if (paramsId) {
+            updateProject({
+                ...body,
+                id: +paramsId,
+            });
+        } else {
+            saveProject(body);
+        }
     };
 
     const handleBack = () => navigate(`/${projectManagerRoutes.root}`);

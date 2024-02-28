@@ -35,8 +35,17 @@ export const projectManagerApi = createApi({
             }),
             invalidatesTags: [projectTag],
         }),
-        getProjectById: builder.query<ICreatedProject, number>({
+        getProjectById: builder.query<IProject, number>({
             query: (id) => `/projects/${id}`,
+            providesTags: [projectTag],
+        }),
+        updateProject: builder.mutation<any, IProject>({
+            query: (body) => ({
+                url: '/update',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: [projectTag],
         }),
     }),
 });
@@ -48,4 +57,5 @@ export const {
     useGetProjectsQuery,
     useDeleteProjectMutation,
     useGetProjectByIdQuery,
+    useUpdateProjectMutation,
 } = projectManagerApi;
