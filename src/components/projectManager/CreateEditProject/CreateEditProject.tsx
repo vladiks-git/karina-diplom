@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ContentHeader } from '../../ContentHeader/ContentHeader';
 import { ContentWrapper } from '../../ContentWrapper/ContentWrapper';
 import { Button, DatePicker, Divider, Form, Input, Select } from 'antd';
@@ -6,14 +6,89 @@ import { Button, DatePicker, Divider, Form, Input, Select } from 'antd';
 import './style.scss';
 import { useForm } from 'antd/es/form/Form';
 import TextArea from 'antd/es/input/TextArea';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { projectManagerRoutes } from '../../../consts/routes';
+import { projectStatusesOptions } from '../../../consts/common';
+import {
+    useGetAllCounterpartiesQuery,
+    useGetAllEmployersQuery,
+    useGetProjectByIdQuery,
+    useSaveProjectMutation,
+} from '../../../api/projectManager';
+import { getFormattedDate } from '../../../utils/common';
+import { toast } from 'react-toastify';
+import { IProject } from '../../../types/project';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { ITask } from '../../../types/task';
+import dayjs from 'dayjs';
+
+const mapTasks = (tasks: ITask[]) =>
+    tasks.map((task) => ({ ...task, endDate: dayjs(task.endDate) }));
+
 const CreateEditProject = () => {
     const navigate = useNavigate();
+    const { id: paramsId } = useParams();
+
     const [form] = useForm();
 
+    const { employerOptions } = useGetAllEmployersQuery(undefined, {
+        selectFromResult: ({ data }) => ({
+            employerOptions:
+                data?.map((user) => ({
+                    label: user.username,
+                    value: user.id,
+                })) || [],
+        }),
+    });
+    const { counterpartiesOptions } = useGetAllCounterpartiesQuery(undefined, {
+        selectFromResult: ({ data }) => ({
+            counterpartiesOptions:
+                data?.map((user) => ({
+                    label: user.username,
+                    value: user.id,
+                })) || [],
+        }),
+    });
+
+    const [saveProject, { isSuccess: isSuccessCreate }] =
+        useSaveProjectMutation();
+
+    const { projectById } = useGetProjectByIdQuery(
+        paramsId ? +paramsId : skipToken,
+        {
+            selectFromResult: ({ data }) => ({
+                projectById: {
+                    name: data?.name || '',
+                    status: data?.status || undefined,
+                    employerId: data?.employerId || undefined,
+                    counterpartyId: data?.counterparty || undefined,
+                    tasks: data?.tasks ? mapTasks(data?.tasks) : [],
+                },
+            }),
+        }
+    );
+
+    console.log(projectById);
+
+    useEffect(() => {
+        form.setFieldsValue({ ...projectById });
+    }, [projectById]);
+
+    useEffect(() => {
+        if (isSuccessCreate) {
+            toast.success('Проект успешно создан!');
+            handleBack();
+        }
+    }, [isSuccessCreate]);
+
     const handleFinish = (values: any) => {
-        console.log(values);
+        const mappedTasks = values.tasks.map((task: any) => ({
+            ...task,
+            endDate: getFormattedDate(task.endDate),
+            isDone: false,
+        }));
+        const body: IProject = { ...values, tasks: mappedTasks };
+        saveProject(body);
     };
 
     const handleBack = () => navigate(`/${projectManagerRoutes.root}`);
@@ -29,7 +104,11 @@ const CreateEditProject = () => {
                     Введите данные для создания нового проекта
                 </div>
                 <div className="create-project__form-wrapper">
-                    <Form form={form} onFinish={handleFinish}>
+                    <Form
+                        initialValues={projectById}
+                        form={form}
+                        onFinish={handleFinish}
+                    >
                         <div className={'create-project__form-inner'}>
                             <div className="create-project__col">
                                 <Form.Item name={'name'}>
@@ -38,21 +117,21 @@ const CreateEditProject = () => {
                                 <Form.Item name={'status'}>
                                     <Select
                                         placeholder={'Статус'}
-                                        options={[]}
+                                        options={projectStatusesOptions}
                                     />
                                 </Form.Item>
                             </div>
                             <div className="create-project__col">
-                                <Form.Item name={'employer'}>
+                                <Form.Item name={'employerId'}>
                                     <Select
                                         placeholder={'Назначен сотруднику'}
-                                        options={[]}
+                                        options={employerOptions}
                                     />
                                 </Form.Item>
-                                <Form.Item name={'counterparty'}>
+                                <Form.Item name={'counterpartyId'}>
                                     <Select
                                         placeholder={'Контрагент'}
-                                        options={[]}
+                                        options={counterpartiesOptions}
                                     />
                                 </Form.Item>
                             </div>
@@ -73,7 +152,9 @@ const CreateEditProject = () => {
                                                 }
                                                 key={field.key}
                                             >
-                                                <Form.Item name={'taskName'}>
+                                                <Form.Item
+                                                    name={[field.name, 'name']}
+                                                >
                                                     <Input
                                                         placeholder={
                                                             'Название задачи'
@@ -81,7 +162,10 @@ const CreateEditProject = () => {
                                                     />
                                                 </Form.Item>
                                                 <Form.Item
-                                                    name={'taskDescription'}
+                                                    name={[
+                                                        field.name,
+                                                        'description',
+                                                    ]}
                                                 >
                                                     <TextArea
                                                         placeholder={
@@ -89,7 +173,12 @@ const CreateEditProject = () => {
                                                         }
                                                     />
                                                 </Form.Item>
-                                                <Form.Item name={'taskEndDate'}>
+                                                <Form.Item
+                                                    name={[
+                                                        field.name,
+                                                        'endDate',
+                                                    ]}
+                                                >
                                                     <DatePicker
                                                         placeholder={
                                                             'Дата окончания'

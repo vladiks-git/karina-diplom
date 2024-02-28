@@ -60,8 +60,7 @@ export const Users = () => {
             render: (role: Roles) => <Tag color={tagColor[role]}>{role}</Tag>,
         },
         {
-            title: 'Редактировать',
-            // рендер тега
+            title: '',
             render: (user: IUser) => (
                 <Button
                     onClick={() => handleEdit(user.id)}
@@ -73,7 +72,7 @@ export const Users = () => {
             ),
         },
         {
-            title: 'Удалить',
+            title: '',
             key: 'delete',
             render: (user: IUser) => (
                 <Button onClick={() => handleDelete(user.id)} danger>

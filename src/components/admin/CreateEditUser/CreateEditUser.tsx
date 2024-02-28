@@ -91,7 +91,7 @@ const CreateEditUser = () => {
                                 <div className={'create-user__row'}>
                                     <Form.Item name={'username'}>
                                         <Input
-                                            placeholder={'Bмя пользователя'}
+                                            placeholder={'Имя пользователя'}
                                         />
                                     </Form.Item>
                                     <Form.Item name={'email'}>

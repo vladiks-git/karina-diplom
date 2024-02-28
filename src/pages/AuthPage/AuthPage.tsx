@@ -5,7 +5,7 @@ import { useForm } from 'antd/es/form/Form';
 import './style.scss';
 import { useAuthMutation } from '../../api/authApi';
 import { useNavigate } from 'react-router';
-import { Roles } from '../../consts/common';
+import { KEY_AUTH, Roles } from '../../consts/common';
 import {
     adminRoutes,
     counterpartyRoutes,
@@ -14,7 +14,9 @@ import {
 } from '../../consts/routes';
 export const AuthPage = () => {
     const navigate = useNavigate();
-    const [login, { data, isSuccess }] = useAuthMutation();
+    const [login, { data, isSuccess }] = useAuthMutation({
+        fixedCacheKey: KEY_AUTH,
+    });
 
     const [form] = useForm();
 

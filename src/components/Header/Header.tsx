@@ -1,8 +1,25 @@
 import React from 'react';
 
 import './style.scss';
+import { authApi, useAuthMutation } from '../../api/authApi';
+import { Button } from 'antd';
+import { useNavigate } from 'react-router';
+import { routes } from '../../consts/routes';
+import { KEY_AUTH } from '../../consts/common';
 
 export const Header = () => {
+    const navigate = useNavigate();
+
+    const [login, { data, reset }] = useAuthMutation({
+        fixedCacheKey: KEY_AUTH,
+    });
+    console.log(data);
+
+    const handleLogout = () => {
+        reset();
+        navigate(routes.auth);
+    };
+
     return (
         <header className={'header'}>
             <svg
@@ -42,6 +59,7 @@ export const Header = () => {
                     </clipPath>
                 </defs>
             </svg>
+            <Button onClick={handleLogout}>Выйти</Button>
         </header>
     );
 };

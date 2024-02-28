@@ -1,3 +1,5 @@
+export const KEY_AUTH = 'key_auth';
+
 export enum Roles {
     ADMIN = 'Администратор',
     COUNTERPARTY = 'Контрагент',
@@ -17,5 +19,31 @@ export const rolesOptions = [
     {
         value: Roles.EMPLOYER,
         label: Roles.EMPLOYER,
+    },
+];
+
+export enum ProjectStatuses {
+    ASSIGNED = 'Назначена',
+    SOLVED = 'Решена',
+    CLOSED = 'Закрыта',
+    IN_WORK = 'В работе',
+}
+
+export const projectStatusesOptions = [
+    {
+        value: ProjectStatuses.ASSIGNED,
+        label: ProjectStatuses.ASSIGNED,
+    },
+    {
+        value: ProjectStatuses.SOLVED,
+        label: ProjectStatuses.SOLVED,
+    },
+    {
+        value: ProjectStatuses.CLOSED,
+        label: ProjectStatuses.CLOSED,
+    },
+    {
+        value: ProjectStatuses.IN_WORK,
+        label: ProjectStatuses.IN_WORK,
     },
 ];

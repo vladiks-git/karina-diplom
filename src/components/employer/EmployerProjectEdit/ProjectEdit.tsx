@@ -1,14 +1,7 @@
 import React from 'react';
 import { ContentHeader } from '../../ContentHeader/ContentHeader';
 import { ContentWrapper } from '../../ContentWrapper/ContentWrapper';
-import {
-    Button,
-    Checkbox,
-    DatePicker,
-    DescriptionsProps,
-    Divider,
-    Form,
-} from 'antd';
+import { Button, Checkbox, DatePicker, Divider, Form } from 'antd';
 import { Input } from 'antd/lib';
 import TextArea from 'antd/es/input/TextArea';
 

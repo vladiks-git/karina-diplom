@@ -5,8 +5,20 @@ import { Card } from '../../ui-kit/Card/Card';
 import { Timeline } from 'antd';
 
 import './style.scss';
+import { useAuthMutation } from '../../api/authApi';
+import { KEY_AUTH } from '../../consts/common';
+import { useGetTasksQuery } from '../../api/counterpartyApi';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 export const СounterpartyPage = () => {
+    const [login, { data }] = useAuthMutation({
+        fixedCacheKey: KEY_AUTH,
+    });
+
+    const userId = data?.id;
+
+    const { data: tasks } = useGetTasksQuery(userId ? userId : skipToken);
+
     return (
         <>
             <ContentHeader title={'Проект твой тай'} />
