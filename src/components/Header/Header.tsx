@@ -13,7 +13,6 @@ export const Header = () => {
     const [login, { data, reset }] = useAuthMutation({
         fixedCacheKey: KEY_AUTH,
     });
-    console.log(data);
 
     const handleLogout = () => {
         reset();

@@ -19,6 +19,7 @@ import CreateEditProject from './components/projectManager/CreateEditProject/Cre
 import EmployerPage from './pages/EmployerPage/EmployerPage';
 import { EmployerProjectList } from './components/employer/EmployerProjectList/ProjectList';
 import { EmployerProjectEdit } from './components/employer/EmployerProjectEdit/ProjectEdit';
+import { ProtectedPage } from './components/ProtectedPage/ProtectedPage';
 
 export const AppRouter = () => {
     const mainRoutes = createBrowserRouter([
@@ -28,7 +29,11 @@ export const AppRouter = () => {
         },
         {
             path: '/',
-            element: <MainLayout />,
+            element: (
+                <ProtectedPage>
+                    <MainLayout />
+                </ProtectedPage>
+            ),
             children: [
                 // ADMIN
                 {

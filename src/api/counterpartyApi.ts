@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ITask } from '../types/task';
+import { IProject } from '../types/project';
 
 export const counterpartyApi = createApi({
     reducerPath: 'counterpartyApi',
     baseQuery: fetchBaseQuery({ baseUrl: '/api/counterparty' }),
     endpoints: (builder) => ({
-        getTasks: builder.query<ITask[], number>({
+        getTasks: builder.query<IProject[], number>({
             query: (id) => `/${id}`,
         }),
     }),

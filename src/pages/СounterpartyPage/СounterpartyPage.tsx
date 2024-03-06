@@ -9,6 +9,7 @@ import { useAuthMutation } from '../../api/authApi';
 import { KEY_AUTH } from '../../consts/common';
 import { useGetTasksQuery } from '../../api/counterpartyApi';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { ITask } from '../../types/task';
 
 export const СounterpartyPage = () => {
     const [login, { data }] = useAuthMutation({
@@ -17,46 +18,43 @@ export const СounterpartyPage = () => {
 
     const userId = data?.id;
 
-    const { data: tasks } = useGetTasksQuery(userId ? userId : skipToken);
+    const { data: projects = [] } = useGetTasksQuery(
+        userId ? userId : skipToken,
+        {
+            refetchOnMountOrArgChange: true,
+        }
+    );
+
+    const getTimelineItem = (tasks: ITask[]) =>
+        tasks.map((task) => ({
+            label: task.endDate,
+            color: task.isDone ? 'green' : 'blue',
+            children: (
+                <div className={'counterparty__timeline-item'}>
+                    <p>{task.name}</p>
+                    <p>{task.description}</p>
+                </div>
+            ),
+        }));
 
     return (
         <>
-            <ContentHeader title={'Проект твой тай'} />
+            <ContentHeader title={'Список проектов'} />
             <ContentWrapper>
                 <Card>
-                    <p>Отслеживание реализации проекта</p>
-                    <div className={'counterparty__timeline-wrapper'}>
-                        <Timeline
-                            mode={'left'}
-                            items={[
-                                {
-                                    color: 'green',
-                                    label: '2015-09-01',
-                                    children: (
-                                        <div
-                                            className={
-                                                'counterparty__timeline-item'
-                                            }
-                                        >
-                                            <p>f1321</p>
-                                            <p>f1321dwqdqwd</p>
-                                        </div>
-                                    ),
-                                },
-                                {
-                                    label: '2015-09-01 09:12:11',
-                                    children: 'Solve initial network problems',
-                                },
-                                {
-                                    children: 'Technical testing',
-                                },
-                                {
-                                    label: '2015-09-01 09:12:11',
-                                    children: 'Network problems being solved',
-                                },
-                            ]}
-                        />
-                    </div>
+                    {projects.map((project) => (
+                        <>
+                            <p>
+                                Отслеживание реализации проекта - {project.name}
+                            </p>
+                            <div className={'counterparty__timeline-wrapper'}>
+                                <Timeline
+                                    mode={'left'}
+                                    items={getTimelineItem(project.tasks)}
+                                />
+                            </div>
+                        </>
+                    ))}
                 </Card>
             </ContentWrapper>
         </>

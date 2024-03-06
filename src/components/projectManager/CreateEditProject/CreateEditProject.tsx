@@ -149,7 +149,7 @@ const CreateEditProject = () => {
                                 </Form.Item>
                             </div>
                         </div>
-                        <p>Задачи</p>
+                        <p className="create-project__tasks-title">Задачи</p>
                         <Form.List name={'tasks'}>
                             {(fields, { add, remove }) => (
                                 <>
@@ -223,7 +223,7 @@ const CreateEditProject = () => {
                             <Button type={'primary'} htmlType={'submit'}>
                                 Сохранить
                             </Button>
-                            <Button>Отмеить</Button>
+                            <Button>Отменить</Button>
                         </div>
                     </Form>
                 </div>

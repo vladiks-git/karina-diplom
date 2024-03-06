@@ -14,7 +14,7 @@ import {
 } from '../../consts/routes';
 export const AuthPage = () => {
     const navigate = useNavigate();
-    const [login, { data, isSuccess }] = useAuthMutation({
+    const [login, { data, isSuccess, error }] = useAuthMutation({
         fixedCacheKey: KEY_AUTH,
     });
 
@@ -42,6 +42,8 @@ export const AuthPage = () => {
         login(values);
     };
 
+    const isAuthError = (error: any): boolean => error?.status === 401;
+
     return (
         <div className={'auth-page'}>
             <div className="auth-page__card">
@@ -53,6 +55,12 @@ export const AuthPage = () => {
                     <Form.Item name={'password'}>
                         <Input.Password placeholder={'Пароль'} />
                     </Form.Item>
+                    {isAuthError(error) && (
+                        <p className={'auth-page__error'}>
+                            Неверный логин или пароль
+                        </p>
+                    )}
+
                     <Button htmlType={'submit'} type={'primary'}>
                         Войти
                     </Button>
