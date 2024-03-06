@@ -1,25 +1,51 @@
 import React from 'react';
 import { ContentHeader } from '../../ContentHeader/ContentHeader';
 import { ContentWrapper } from '../../ContentWrapper/ContentWrapper';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
+import { useGetEmployerProjectsQuery } from '../../../api/employerApi';
+import { useAuthMutation } from '../../../api/authApi';
+import { KEY_AUTH } from '../../../consts/common';
+import { skipToken } from '@reduxjs/toolkit/query';
+import { useNavigate, useParams } from 'react-router';
+import { employerRoutes } from '../../../consts/routes';
 
 export const EmployerProjectList = () => {
+    const navigate = useNavigate();
+
+    const [login, { data }] = useAuthMutation({
+        fixedCacheKey: KEY_AUTH,
+    });
+
+    const userId = data?.id;
+
+    const { data: projects } = useGetEmployerProjectsQuery(
+        userId ? userId : skipToken
+    );
+
+    const handleEdit = (id: number) => {
+        navigate(`${employerRoutes.project}/${id}`);
+    };
+
     const columns = [
         {
             title: 'Проект - контрагент',
-            render: () => <p>проект-контрагент</p>,
+            render: (project: any) => (
+                <p>
+                    {project.name} - {project.counterpartyName}
+                </p>
+            ),
         },
         {
-            title: 'Действия',
-            render: () => <p>дкйствия</p>,
-        },
-    ];
-
-    const testData = [
-        {
-            id: '1',
-            username: 'fio',
-            role: 'admin',
+            title: '',
+            render: (project: any) => (
+                <Button
+                    onClick={() => handleEdit(project.id)}
+                    type={'text'}
+                    style={{ color: 'blue' }}
+                >
+                    Подробнее
+                </Button>
+            ),
         },
     ];
 
@@ -28,7 +54,7 @@ export const EmployerProjectList = () => {
             <ContentHeader title={'Список проектов'} />
             <ContentWrapper>
                 <Table
-                    dataSource={testData}
+                    dataSource={projects}
                     columns={columns}
                     pagination={false}
                 />

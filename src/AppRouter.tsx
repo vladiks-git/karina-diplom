@@ -88,7 +88,7 @@ export const AppRouter = () => {
                             element: <EmployerProjectList />,
                         },
                         {
-                            path: `${employerRoutes.project}`,
+                            path: `${employerRoutes.project}/:id`,
                             element: <EmployerProjectEdit />,
                         },
                     ],

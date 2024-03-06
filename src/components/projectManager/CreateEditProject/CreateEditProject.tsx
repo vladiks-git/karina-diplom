@@ -223,7 +223,6 @@ const CreateEditProject = () => {
                             <Button type={'primary'} htmlType={'submit'}>
                                 Сохранить
                             </Button>
-                            <Button>Отменить</Button>
                         </div>
                     </Form>
                 </div>
